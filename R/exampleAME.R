@@ -1,15 +1,15 @@
-# Beispiel fuer die verwendung der AME-Funktion
+# Example for using the ame() function
 
-# Pakete installieren
-install.packages("rpart")
-install.packages("randomForest")
-install.packages("ggplot2")
-install.packages("dplyr")
+# Install packages if not available
+if (!"rpart" %in% installed.packages()[,1]) install.packages("rpart")
+if (!"randomForest" %in% installed.packages()[,1]) install.packages("randomForest")
+if (!"ggplot2" %in% installed.packages()[,1]) install.packages("ggplot2")
+if (!"dplyr" %in% installed.packages()[,1]) install.packages("dplyr")
 
-# Seed setzen
+# Set seed for reproducible results
 set.seed(1)
 
-# Daten erzeugen
+# Generate data
 n <- 10000
 a <- 150
 b1 <- 120
@@ -18,25 +18,24 @@ b2 <- -200
 b1.2 <- -30
 s <- 0.75
 
-# Variablen
+# Variables
 alter <- round(runif(n, 15, 64), 0)
 geschl <- rbinom(n, 1, .5)
 
-# Abhaengige Variable
+# Dependent variable
 y <- round(exp(rnorm(n , mean=log(a + b1*alter + b1.sqr*alter*alter + b2*geschl 
      + b1.2*alter*geschl), sd=s)))
 mean(y)
-# Graphik
+# Plot
 qplot(alter, y, geom=c("point", "smooth"), group = geschl, method="gam"
       , formula=y~poly(x,2)) + ylim(0, 5000)
 
-# Daten zusammenfuegen
+# Merge data
 test.data <- data.frame(cbind(y, alter, geschl))
 rm(y, alter, geschl)
 
-# Funktion einlesen
-setwd("Pfad in dem ame.R liegt")
-source("ame.R")
+# Load function (this will be made into a package later on)
+source("R/ame.R")
 
 # Average marginal effects fuer metrische abhaengige Variablen
 # Es k?nnen der Effekt fuer metrische und binaere unabhaengige Variablen geschaetzt werden
