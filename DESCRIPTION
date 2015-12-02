@@ -1,0 +1,9 @@
+Package: mlame
+Type: Package
+Title: Estimating Average Marginal Effects for Machine Learning algorithms
+Version: 0.01
+Date: 2015-12-02
+Author: Jonas Beste and Arne Bethmann
+Maintainer: Arne Bethmann <bethmann@uni-mannheim.de>
+Description: This package provides an easy way to estimate average margine effects from different kinds of machine learning algorithms
+License: GPL-3
