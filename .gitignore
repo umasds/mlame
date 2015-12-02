@@ -91,3 +91,5 @@ sympy-plots-for-*.tex/
 *.Rproj
 *.dta
 *.csv
+.Rproj.user
+.Rhistory
