@@ -16,29 +16,36 @@ b1 <- 120
 b1.sqr <- -0.7
 b2 <- -200
 b1.2 <- -30
+b3.1 <- 150
+b3.2 <- 250
 s <- 0.75
 
 # Variables
 alter <- round(runif(n, 15, 64), 0)
 geschl <- rbinom(n, 1, .5)
+bildung <- as.factor(rbinom(n, 2, .6))
+real <- ifelse(bildung==1, 1, 0)
+abi <- ifelse(bildung==2, 1, 0)
 
 # Dependent variable
 y <- round(exp(rnorm(n , mean=log(a + b1*alter + b1.sqr*alter*alter + b2*geschl 
-     + b1.2*alter*geschl), sd=s)))
+     + b1.2*alter*geschl + b3.1*real + b3.2*abi), sd=s)))
 mean(y)
 # Plot
+library(ggplot2)
 qplot(alter, y, geom=c("point", "smooth"), group = geschl, method="gam"
       , formula=y~poly(x,2)) + ylim(0, 5000)
 
 # Merge data
-test.data <- data.frame(cbind(y, alter, geschl))
-rm(y, alter, geschl)
+test.data <- data.frame(cbind(y, alter, geschl, bildung))
+test.data$bildung <- as.factor(test.data$bildung)
+rm(y, alter, geschl, bildung)
 
 # Load function (this will be made into a package later on)
 source("R/ame.R")
 
 # Average marginal effects fuer metrische abhaengige Variablen
-# Es k?nnen der Effekt fuer metrische und binaere unabhaengige Variablen geschaetzt werden
+# Es koennen der Effekt fuer metrische und binaere unabhaengige Variablen geschaetzt werden
 # Funktionsaufbau:
 # ame(data.name, meth, func, var.name, fromtoby=NULL, plotTree=FALSE, plotSlope=FALSE)
 # data.name = Name des Datenframes
@@ -61,15 +68,19 @@ source("R/ame.R")
   # 2. Predicted Values (nur bei metr. V.)
   # 2./3. Informationen zur Modell
 
-# Anwendung bei bin?rer Variable Geschlecht
-ame(test.data, "lm", y ~ alter + I(alter^2) + geschl + I(alter*geschl), "geschl")
-ame(test.data, "dt", y ~ alter + geschl, "geschl", plotTree=TRUE)[1]
-ame(test.data, "dtt", y ~ alter, "geschl")[1]
+# Anwendung bei binaerer Variable Geschlecht
+ame(test.data, "lm", y ~ alter + I(alter^2) + geschl + I(alter*geschl) + bildung, "geschl")
+ame(test.data, "dt", y ~ alter + geschl + bildung, "geschl", plotTree=TRUE)[1]
+ame(test.data, "dtt", y ~ alter + bildung, "geschl")[1]
+
+# Anwendung bei kategorialer Variable Bildung
+ame(test.data, "lm", y ~ alter + I(alter^2) + geschl + I(alter*geschl) + bildung, "bildung")[c(1,2)]
+ame(test.data, "dt", y ~ alter + geschl + bildung, "bildung", plotTree=TRUE)[c(1,2)]
+ame(test.data, "dtt", y ~ alter + geschl, "bildung", plotTree=TRUE)[2]
 
 # Anwendung bei metrischer Variable Alter
-ame(test.data, "lm", y ~ alter + I(alter^2) + geschl + I(alter*geschl), "alter", seq(20,60,5))[1]
-ame(test.data, "rf", y ~ alter + I(alter^2) + geschl + I(alter*geschl), "alter", seq(20,60,5)
-    , plotPV=TRUE)[1]
+ame(test.data, "lm", y ~ alter + I(alter^2) + geschl + I(alter*geschl), "alter", seq(20,60,5))[c(1,2)]
+ame(test.data, "rf", y ~ alter + geschl, "alter", seq(20,60,5), plotPV=TRUE)
 
 # Bootrapping zur Bestimmung  der Standardfehler und 95%-Konfidenzintervalle
 # Funktionsaufbau
@@ -84,6 +95,7 @@ ame(test.data, "rf", y ~ alter + I(alter^2) + geschl + I(alter*geschl), "alter",
   # 4. Upper Bound (95%-CI)
 
 # Anwendung
-ame.boot(test.data, 10, "lm", y ~ alter + geschl, "geschl")
-ame.boot(test.data, 10, "dtt", y ~ alter, "geschl")
-ame.boot(test.data, 10, "dt", y ~ alter + geschl, "alter", seq(20,60,5))
+ame.boot(test.data, 10, "lm", y ~ alter + geschl + bildung, "geschl")
+ame.boot(test.data, 10, "dtt", y ~ alter+ bildung, "geschl")
+ame.boot(test.data, 10, "dt", y ~ alter + geschl + bildung, "bildung")
+ame.boot(test.data, 10, "dt", y ~ alter + geschl, "alter", seq(20,60,1))
