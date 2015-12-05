@@ -50,8 +50,8 @@ ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FA
   if ((length(levels(data.name[[var.name]]))==2) | (nrow(unique(data.name[var.name]))==2)) {
     if (meth == "dtt" | meth == "rftt") {
       # Predictions
-      y.pred.fit.1 <- predict(p0.fit, data.name)
-      y.pred.fit.2 <- predict(p1.fit, data.name)    
+      pv.1 <- mean(predict(p0.fit, data.name))
+      pv.2 <- mean(predict(p1.fit, data.name))    
     }
     else {
       # Assigning values
