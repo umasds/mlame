@@ -93,3 +93,4 @@ sympy-plots-for-*.tex/
 *.csv
 .Rproj.user
 .Rhistory
+.Rbuildignore

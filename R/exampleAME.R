@@ -5,6 +5,10 @@ if (!"rpart" %in% installed.packages()[,1]) install.packages("rpart")
 if (!"randomForest" %in% installed.packages()[,1]) install.packages("randomForest")
 if (!"ggplot2" %in% installed.packages()[,1]) install.packages("ggplot2")
 if (!"dplyr" %in% installed.packages()[,1]) install.packages("dplyr")
+library(rpart)
+library(randomForest)
+library(ggplot2)
+library(dplyr)
 
 # Set seed for reproducible results
 set.seed(1)
