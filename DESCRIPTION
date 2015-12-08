@@ -1,9 +1,27 @@
 Package: mlame
-Type: Package
-Title: Estimating Average Marginal Effects for Machine Learning algorithms
-Version: 0.01
-Date: 2015-12-02
-Author: Jonas Beste and Arne Bethmann
-Maintainer: Arne Bethmann <bethmann@uni-mannheim.de>
-Description: This package provides an easy way to estimate average margine effects from different kinds of machine learning algorithms
+Title: Estimate Average Marginal Effects for Machine Learning Algorithms
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Jonas", "Beste", email = "jonas.beste@iab.de", role = "aut"),
+    person("Arne", "Bethmann", email = "bethmann@uni-mannheim.de", role =
+        c("aut", "cre")))
+URL: https://mlame.github.io
+BugReports: https://github.com/umasds/mlame/issues
+Description: An easy way to estimate average marginal effects (AME), predicted
+    probabilities / values and similar quantities from different kinds of
+    machine learning algorithms. Bootstrap estimates of standard errors,
+    confidence intervals and p-values are also provided.
+Depends:
+    R (>= 3.2.0)
 License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    dplyr,
+    rpart,
+    ggplot2,
+    randomForest
+RoxygenNote: 5.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

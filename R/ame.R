@@ -1,11 +1,73 @@
-# Funktion AME
-
-# Pakete einlesen
-library(rpart)
-library(randomForest)
-library(ggplot2)
-library(dplyr)
-
+#' Average marginal effects for ML algorithms
+#'
+#' \code{ame} estimates average marginal effects (AME) for models fitted using
+#' different machine learning (ML) algorithms. AMEs can be estimated for
+#' continuous and binary independent variables / features on continuous
+#' dependent variables / response.
+#'
+#' @param data.name a data frame containing the variables in the model.
+#' @param meth ML algorithm to be used; currently \code{"lm"}, \code{"dt"},
+#'     \code{"dtt"}, \code{"rf"}, and \code{"rftt"} are implemented. For more
+#'     information see 'Details'.
+#' @param func an object of class "\code{\link{formula}}" specifying the
+#'     model to be fitted. For example: \code{y ~ x + z}
+#' @param var.name name of independent variable / feature AME is to be
+#'     estimated for.
+#' @param fromtoby range predicted values are to be esitmated for. Only
+#'     necessary for continuous independent variables / features. Usually
+#'     given as \code{seq(from, to, by)} Where \code{from} and \code{to}
+#'     are the interval boundaries and \code{by} is the step width.
+#' @param plotTree plot the resulting decision tree (only for \code{meth =
+#'     "dt"}).
+#' @param plotPV plot predicted values (only for continuous independent
+#'     variables / features).
+#'
+#' @section Details:
+#'     The data frame \code{data.name} is used to train a ML model using one of
+#'     five algorithms:
+#'     \describe{
+#'     \item{\code{method = "lm"}}{an ordinary linear model (yes, this is also considered a ML
+#'         algorithm ;)}
+#'     \item{\code{method = "dt"}}{an ordinary regression tree implemented via the
+#'         \code{\link[rpart]{rpart}} function.}
+#'     \item{\code{method = "dtt"}}{two tree algorithm}
+#'     \item{\code{method = "rf"}}{a random forest}
+#'     \item{\code{method = "rftt"}}{random forest two tree}
+#'     }
+#'
+#'     The formula \code{func} is used to specify the dependent variable /
+#'     response and the independent variables / features that will be used for
+#'     learning the model.
+#'
+#' @section Value:
+#' \code{ame} returns a \code{list} of two (for binary independent variables /
+#'     features) or three objects (for continuous independent variables /
+#'     features):
+#'     \enumerate{
+#'         \item AME estimate
+#'         \item predicted values (continuous only)
+#'         \item model information
+#'     }
+#'
+#' @author Jonas Beste (\email{jonas.beste@@iab.de}) and Arne Bethmann (\email{bethmann@@uni-mannheim.de}).
+#'
+#' @seealso \code{\link{ame.boot}}
+#'
+#' @examples
+#' ## Estimate AMEs for Species on Petal.Length in iris data
+#' set.seed(1)
+#'
+#' ## Using a linear model
+#' ame(iris, "lm", Petal.Length ~ Petal.Width + Species, "Species")[1:2]
+#'
+#' ## Using a decision tree
+#' ame(iris, "dt", Petal.Length ~ Petal.Width + Species, "Species")[1:2]
+#'
+#' @importFrom rpart rpart
+#' @importFrom randomForest randomForest
+#' @importFrom randomForest importance
+#'
+#' @export
 ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FALSE, plotPV=FALSE){
   # Linear Regression
   if (meth == "lm") {
@@ -57,7 +119,7 @@ ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FA
     if (meth == "dtt" | meth == "rftt") {
       # Predictions
       pv.1 <- mean(predict(p0.fit, data.name))
-      pv.2 <- mean(predict(p1.fit, data.name))    
+      pv.2 <- mean(predict(p1.fit, data.name))
     }
     else {
       data.1 <- data.name
@@ -91,7 +153,7 @@ ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FA
         data[var.name] <- i
         pv[counter] <- mean(predict(fit, data))
         counter <- sum(counter, 1)
-      }  
+      }
     }
     else {
       # Assigning values and predict
@@ -141,6 +203,7 @@ ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FA
   }
   return(output)
 }
+<<<<<<< HEAD
 
 # Bootstrapping
 ame.boot <- function(data.name, rep=100, meth="dt", func, var.name, fromtoby) {
@@ -166,3 +229,5 @@ ame.boot <- function(data.name, rep=100, meth="dt", func, var.name, fromtoby) {
   }
   return(output)
 }
+=======
+>>>>>>> aa7d36d16c3aee086487d2af7f7225aeb6fc9ce9
