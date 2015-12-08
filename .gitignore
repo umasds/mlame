@@ -93,4 +93,5 @@ sympy-plots-for-*.tex/
 *.csv
 .Rproj.user
 .Rhistory
-.Rbuildignore
+#.Rbuildignore
+inst/doc

@@ -1,11 +1,4 @@
-# Funktion AME
-
-# Pakete einlesen
-library(rpart)
-library(randomForest)
-library(ggplot2)
-library(dplyr)
-
+#' Average marginal effects fuer metrische abhaengige Variablen
 ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FALSE, plotPV=FALSE){
   # Linear Regression
   if (meth == "lm") {
@@ -51,7 +44,7 @@ ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FA
     if (meth == "dtt" | meth == "rftt") {
       # Predictions
       pv.1 <- mean(predict(p0.fit, data.name))
-      pv.2 <- mean(predict(p1.fit, data.name))    
+      pv.2 <- mean(predict(p1.fit, data.name))
     }
     else {
       # Assigning values
@@ -79,7 +72,7 @@ ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FA
         data[var.name] <- i
         pv[counter] <- mean(predict(fit, data))
         counter <- sum(counter, 1)
-      }  
+      }
     }
     else {
       # Assigning values and predict
@@ -127,16 +120,5 @@ ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FA
       output <- list(ame=ame, pv=pv, fit=sfit)
     }
   }
-  return(output)
-}
-
-# Bootstrapping
-ame.boot <- function(data.name, rep=100, meth="dt", func, var.name, fromtoby) {
-  ame.boot <- replicate(rep, unlist(ame(sample_n(data.name, nrow(data.name), replace=T), meth, func, var.name, fromtoby)[1]))
-  mean <- round(mean(ame.boot), 3)
-  se <- round(sd(ame.boot), 3)
-  error <- round((qnorm(0.975) * se), 3)
-  p <- round(2*pnorm(-abs(mean/se)), 3)
-  output <- c(ame=mean, se=se, p=p, lci=mean-error, uci=mean+error)
   return(output)
 }
