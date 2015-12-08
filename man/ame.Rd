@@ -2,12 +2,86 @@
 % Please edit documentation in R/ame.R
 \name{ame}
 \alias{ame}
-\title{Average marginal effects fuer metrische abhaengige Variablen}
+\title{Average marginal effects for ML algorithms}
 \usage{
 ame(data.name, meth = "dt", func, var.name, fromtoby = NULL,
   plotTree = FALSE, plotPV = FALSE)
 }
+\arguments{
+\item{data.name}{a data frame containing the variables in the model.}
+
+\item{meth}{ML algorithm to be used; currently \code{"lm"}, \code{"dt"},
+\code{"dtt"}, \code{"rf"}, and \code{"rftt"} are implemented. For more
+information see 'Details'.}
+
+\item{func}{an object of class "\code{\link{formula}}" specifying the
+model to be fitted. For example: \code{y ~ x + z}}
+
+\item{var.name}{name of independent variable / feature AME is to be
+estimated for.}
+
+\item{fromtoby}{range predicted values are to be esitmated for. Only
+necessary for continuous independent variables / features. Usually
+given as \code{seq(from, to, by)} Where \code{from} and \code{to}
+are the interval boundaries and \code{by} is the step width.}
+
+\item{plotTree}{plot the resulting decision tree (only for \code{meth =
+"dt"}).}
+
+\item{plotPV}{plot predicted values (only for continuous independent
+variables / features).}
+}
 \description{
-Average marginal effects fuer metrische abhaengige Variablen
+\code{ame} estimates average marginal effects (AME) for models fitted using
+different machine learning (ML) algorithms. AMEs can be estimated for
+continuous and binary independent variables / features on continuous
+dependent variables / response.
+}
+\section{Details}{
+
+    The data frame \code{data.name} is used to train a ML model using one of
+    five algorithms:
+    \describe{
+    \item{\code{method = "lm"}}{an ordinary linear model (yes, this is also considered a ML
+        algorithm ;)}
+    \item{\code{method = "dt"}}{an ordinary regression tree implemented via the
+        \code{\link[rpart]{rpart}} function.}
+    \item{\code{method = "dtt"}}{two tree algorithm}
+    \item{\code{method = "rf"}}{a random forest}
+    \item{\code{method = "rftt"}}{random forest two tree}
+    }
+
+    The formula \code{func} is used to specify the dependent variable /
+    response and the independent variables / features that will be used for
+    learning the model.
+}
+
+\section{Value}{
+
+\code{ame} returns a \code{list} of two (for binary independent variables /
+    features) or three objects (for continuous independent variables /
+    features):
+    \enumerate{
+        \item AME estimate
+        \item predicted values (continuous only)
+        \item model information
+    }
+}
+\examples{
+## Estimate AMEs for Species on Petal.Length in iris data
+set.seed(1)
+
+## Using a linear model
+ame(iris, "lm", Petal.Length ~ Petal.Width + Species, "Species")[1:2]
+
+## Using a decision tree
+ame(iris, "dt", Petal.Length ~ Petal.Width + Species, "Species")[1:2]
+
+}
+\author{
+Jonas Beste (\email{jonas.beste@iab.de}) and Arne Bethmann (\email{bethmann@uni-mannheim.de}).
+}
+\seealso{
+\code{\link{ame.boot}}
 }
 

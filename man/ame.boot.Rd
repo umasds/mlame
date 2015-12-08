@@ -16,5 +16,6 @@ ame.boot(test.data, 10, "dtt", y ~ alter+ bildung, "geschl")
 ame.boot(test.data, 10, "dt", y ~ alter + geschl + bildung, "bildung")
 ame.boot(test.data, 10, "dt", y ~ alter + geschl, "alter", seq(20,60,1))
 }
+
 }
 

@@ -7,6 +7,8 @@
 #' ame.boot(test.data, 10, "dt", y ~ alter + geschl + bildung, "bildung")
 #' ame.boot(test.data, 10, "dt", y ~ alter + geschl, "alter", seq(20,60,1))
 #' }
+#'
+#' @export
 ame.boot <- function(data.name, rep=100, meth="dt", func, var.name, fromtoby) {
   ame.boot <- replicate(rep, unlist(ame(sample_n(data.name, nrow(data.name), replace=T), meth, func, var.name, fromtoby)[1]))
   mean <- round(mean(ame.boot), 3)
