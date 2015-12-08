@@ -38,6 +38,7 @@ qplot(alter, y, geom=c("point", "smooth"), group = geschl, method="gam"
 
 # Merge data
 test.data <- data.frame(cbind(y, alter, geschl, bildung))
+#test.data$geschl <- as.factor(test.data$geschl)
 test.data$bildung <- as.factor(test.data$bildung)
 rm(y, alter, geschl, bildung)
 
@@ -80,7 +81,7 @@ ame(test.data, "dtt", y ~ alter + geschl, "bildung", plotTree=TRUE)[2]
 
 # Anwendung bei metrischer Variable Alter
 ame(test.data, "lm", y ~ alter + I(alter^2) + geschl + I(alter*geschl), "alter", seq(20,60,5))[c(1,2)]
-ame(test.data, "rf", y ~ alter + geschl, "alter", seq(20,60,5), plotPV=TRUE)
+ame(test.data, "dt", y ~ alter + geschl, "alter", seq(20,60,5), plotPV=TRUE)
 
 # Bootrapping zur Bestimmung  der Standardfehler und 95%-Konfidenzintervalle
 # Funktionsaufbau
