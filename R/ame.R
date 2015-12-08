@@ -166,6 +166,10 @@ ame <- function(data.name, meth="dt", func, var.name, fromtoby=NULL, plotTree=FA
         counter <- sum(counter, 1)
       }
     }
+    if (plotPV == "TRUE") {
+      plot(levels(data.name[[var.name]]), pv, type="h")
+      #plot(tail(steps, length(steps)-1), slope)
+    }
     # AMEs
     names(pv) <- levels(data.name[[var.name]])
     ame <- as.dist(replicate(length(pv), pv) - t(replicate(length(pv), pv)))

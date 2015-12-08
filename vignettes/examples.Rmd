@@ -1,7 +1,7 @@
 ---
 title: "Examples for using mlame"
 author: "Jonas Beste and Arne Bethmann"
-date: "`r Sys.Date()`"
+date: "`{r} Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
@@ -96,10 +96,10 @@ nur bei metrischen variablen notwendig. Ueblicherweise ueber die Function seq(fr
 - plotTree = Plot des Entscheidungsbaums bei meth = "dt" (optional)
 - plotPV = Plot der Predicted Values (optional; nur bei metrischen unabhaenigen variablen)
 
-Ausgabe: Liste mit 2 (binaere V.) bzw. 3 (metrische V.) Objekten
+Ausgabe: Liste mit 3 Objekten
   - 1. AME-Schaetzer
-  - 2. Predicted Values (nur bei metr. V.)
-  - 2./3. Informationen zur Modell
+  - 2. Predicted Values
+  - 3. Informationen zur Modell
 
 Anwendung bei binaerer Variable Geschlecht
 ```
@@ -112,7 +112,7 @@ Anwendung bei kategorialer Variable Bildung
 ```
 ame(test.data, "lm", y ~ alter + I(alter^2) + geschl + I(alter*geschl) + bildung, "bildung")[c(1,2)]
 ame(test.data, "dt", y ~ alter + geschl + bildung, "bildung", plotTree=TRUE)[c(1,2)]
-#ame(test.data, "dtt", y ~ alter + geschl, "bildung", plotTree=TRUE)[2]
+#ame(test.data, "rf", y ~ alter + geschl + bildung, "bildung", plotPV=TRUE)[2]
 ```
 
 Anwendung bei metrischer Variable Alter
@@ -126,12 +126,12 @@ Funktionsaufbau
 ame.boot(data.name, rep, n, meth, func, var.name, fromtoby)
  Bedeutung der Argumente wie bei Funktion AME
  rep = Anzahl der Wiederholungen (default = 100)
- n = Anzahl der Faelle pro Sample (default = 1000)
- Ausgabe: Vektor mit 4 Elementen:
+ Ausgabe: Vektor mit 5 Elementen:
   - 1. AME-Schaetzer
   - 2. SE
-  - 3. Lower Bound (95%-CI)
-  - 4. Upper Bound (95%-CI)
+  - 3. p-value
+  - 4. Lower Bound (95%-CI)
+  - 5. Upper Bound (95%-CI)
 
  Anwendung
 ```
