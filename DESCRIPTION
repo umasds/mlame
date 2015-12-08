@@ -14,6 +14,7 @@ Description: An easy way to estimate average marginal effects (AME), predicted
 Depends:
     R (>= 3.2.0)
 License: GPL-3
+Encoding: UTF-8
 LazyData: true
 Imports:
     dplyr,

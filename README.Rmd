@@ -1,9 +1,0 @@
----
-title: "Average Marginal Effects for Machine Learning Algorithms"
-author: "Jonas Beste and Arne Bethmann"
-date: "2. Dezember 2015"
-output: md_document
----
-
-# Estimating Average Marginal Effects for Machine Learning Algorithms
-This package provides an easy way to estimate average margine effects from different kinds of machine learning algorithms.
