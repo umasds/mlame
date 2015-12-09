@@ -5,7 +5,7 @@ Authors@R: c(
     person("Jonas", "Beste", email = "jonas.beste@iab.de", role = "aut"),
     person("Arne", "Bethmann", email = "bethmann@uni-mannheim.de", role =
         c("aut", "cre")))
-URL: https://mlame.github.io
+URL: https://github.com/umasds/mlame
 BugReports: https://github.com/umasds/mlame/issues
 Description: An easy way to estimate average marginal effects (AME), predicted
     probabilities / values and similar quantities from different kinds of
