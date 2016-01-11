@@ -95,4 +95,4 @@ sympy-plots-for-*.tex/
 .Rhistory
 #.Rbuildignore
 inst/doc
-.RData
+.Rdata
